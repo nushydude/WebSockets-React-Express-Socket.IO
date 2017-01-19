@@ -5,9 +5,46 @@
 
 body {
   background: #efefe;
+  font-family: arial, sans-serif;
+  color: #777;
 }
 
 .container {
-  width: 990px;
+  width: 640px;
   margin: 20px auto 0;
+}
+
+.header {
+  font-size: 2rem;
+  margin-bottom: .5rem;
+}
+
+.list {
+  list-style: none;
+}
+
+.list li {
+  padding: .5rem 0;
+  font-size: 1.25rem;
+}
+
+.button {
+  margin-top: 10px;
+  padding: 5px 15px;
+  color: #FFF;
+  background-color: #000;
+  border-radius: 0;
+  border: none;
+  font-size: 1.5rem;
+}
+
+.button:hover {
+  background-color: #FFF;
+  color: #000;
+  border: 1px solid #000;
+}
+
+.button:active {
+  position: relative;
+  top: 1px;
 }

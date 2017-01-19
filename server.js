@@ -1,27 +1,42 @@
-const express = require('./node_modules/express')
-const port = process.env.PORT || 8081
-const path = require('./node_modules/path')
-const compression = require('compression')
+const express = require('express');
+
+const path = require('path');
+
+const compression = require('compression');
+
+const bodyParser = require('body-parser');
+
+const files = require('./server_modules/files');
 
 const app = express();
 
+const port = process.env.PORT || 8081;
+
 app.use(compression());
+
+app.use(bodyParser.json());
+app.use(bodyParser.text());
+app.use(bodyParser.urlencoded({
+  extended: false,
+}));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-var bodyParser = require('./node_modules/body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.text());
-app.use(bodyParser.urlencoded({extended:false}));
+app.get('/api/files', (req, res) => {
+  console.log('/api/files');
+  const filesList = files.ReadFiles();
+  if (filesList) {
+    res.json(filesList);
+  } else {
+    res.status(500).send('An error occurred while quering the files list');
+  }
+});
 
-// we are only sending the index.html for all routes 
-app.get('*', function (req, res){
+// we are only sending the index.html for all routes
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-var server = app.listen(port, function() {
-  var host = server.address().address;
-  var port = server.address().port;
-  console.log('Server listening at http://%s:%s', host, port);
-
-})
+app.listen(port, () => {
+  console.log(`Server started at localhost:${port}.`);
+});
