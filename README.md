@@ -18,9 +18,11 @@ I was originally planning to update the "files list" client when files were crea
 $npm install
 
 // for webpack compilation
+
 $npm run dev
 
 // this will run the server
+
 $npm run start 
 
 Then you should be able to access the app from localhost:8081. 
