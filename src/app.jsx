@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import io from 'socket.io-client';
 
-import fetchUtils from './util/fetchData';
-
 const socket = io('http://localhost:8081');
 
 class App extends Component {
@@ -22,7 +20,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // this.fetchData();
     socket.emit('fetchFiles');
 
     socket.on('files', (data) => {
@@ -34,23 +31,6 @@ class App extends Component {
     socket.on('error', (message) => {
       console.log(message);
     });
-  }
-
-  fetchData() {
-    fetch('/api/files', {
-      header: {
-        accept: 'application/json',
-      },
-    })
-    .then(fetchUtils.checkStatus)
-    .then(fetchUtils.parseJSON)
-    .then(jsonData => this.setState({
-      files: jsonData,
-    }));
-  }
-
-  handleClickRefresh() {
-    this.fetchData();
   }
 
   handleClickCreate(e) {
@@ -90,7 +70,6 @@ class App extends Component {
               ))
             }
           </ul>
-          <button className="button" onClick={this.handleClickRefresh}>Refresh</button>
         </div>
         <div className="section">
           <h3 className="header">Add a new file</h3>
