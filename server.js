@@ -10,6 +10,33 @@ const files = require('./server_modules/files');
 
 const app = express();
 
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+
+function sendFiles(socket) {
+  const data = {
+    files: files.ReadFiles(),
+  };
+  socket.emit('files', data);
+}
+
+io.on('connection', (socket) => {
+  // console.log('new client connected');
+
+  socket.on('fetchFiles', () => {
+    sendFiles(socket);
+  });
+
+  socket.on('createFile', (filename) => {
+    if (files.CreateFile(filename)) {
+      sendFiles(socket);
+    } else {
+      socket.emmit('Error', 'Could not create file.');
+    }
+  });
+});
+
+
 const port = process.env.PORT || 8081;
 
 app.use(compression());
@@ -23,7 +50,7 @@ app.use(bodyParser.urlencoded({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api/files', (req, res) => {
-  console.log('/api/files');
+  // console.log('/api/files');
   const filesList = files.ReadFiles();
   if (filesList) {
     res.json(filesList);
@@ -37,6 +64,13 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+
+server.listen(port, () => {
+  // console.log(`Server started at localhost:${port}.`);
+});
+
+/*
 app.listen(port, () => {
   console.log(`Server started at localhost:${port}.`);
 });
+*/
