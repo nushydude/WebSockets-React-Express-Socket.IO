@@ -1,25 +1,28 @@
-# Simple React Starter Kit
-A simple react starter kit based on Webpack
+# WebSockets-React-Express-Socket.IO
+A simple example of web sockets with ReactJS and Express server, using socket.io. 
 
+Note: socket.io-client is used on the client end (i.e. react app).
 
-#Preparation
+## What it does 
 
-First you need to have Node.js installed. This will install npm, the Node Package Manager, which will be used to download components.
+When the react app mounts, it will emit a message to the server through the socket to fetch the list of files, which are stored in the files folder in the source root. This emission of a message will be performed from the componentDidMount life-cycle method. We could do this in the constructor as well.
 
-Simply run 'npm install' to install the dependent modules.
+Furthermore, we will be setting up an listener for the "files" event (socket.on("files", ... ) in the same componentDidMount method, where, when the files list is received through the socket, the state of the app will get updated causing a DOM rerender.
 
+We can tell the server to create new files as well. In the form section, we can give a name for a file and it will emit a "createFile" event to the socket. The server will catch this and create the file. Once the file is created, it will emit a "files" event with all the files it's got in the folder. The app will catch this event on its "files" event we created in the componentDidMount method, and update the state of the app which will cause the DOM to be rerendered. 
 
-#Writing your app
+I was originally planning to update the "files list" client when files were created in/removed from the server's file system by hand. Wanted to use fs.watch from the express server, but for the time being, this should do, because now I have a decent understanding of how web sockets work in a react app. 
 
-White your cpde in the ./src/app.jsx. A basic structure is given.
+## Installation
 
+$npm install
 
-#Running your app
+// for webpack compilation
+$npm run dev
 
-Run 'npm run dev' to run webpack in developer mode or run 'npm run build' to run webpack in production mode.
+// this will run the server
+$npm run start 
 
-Run 'npm start server' to start the server. Your app will be served from the address 'localhost:8081' and you can access your app by entering that address into your browser.
+Then you should be able to access the app from localhost:8081. 
 
-
-#Notes
-You can modify the global styles in the './public/style.css' file. But you can define separate css files for components and import them within the component.
+React happily!
