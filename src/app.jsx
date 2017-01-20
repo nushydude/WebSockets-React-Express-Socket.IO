@@ -13,8 +13,6 @@ class App extends Component {
       filename: '',
     };
 
-    this.fetchData = this.fetchData.bind(this);
-    this.handleClickRefresh = this.handleClickRefresh.bind(this);
     this.handleClickCreate = this.handleClickCreate.bind(this);
     this.handleTyping = this.handleTyping.bind(this);
   }
